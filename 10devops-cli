@@ -1,0 +1,36 @@
+#!/bin/bash
+set -uo pipefail
+# devops-cli: barcha asboblarni birlashtiruvchi boshqaruv markazi
+
+usage() {
+  echo "Foydalanish: ./devops-cli <buyruq> [argumentlar]"
+  echo ""
+  echo "Buyruqlar:"
+  echo "  logs <fayl>         - log_analyzer.sh ni ishga tushiradi"
+  echo "  backup <papka...>   - backup.sh ni ishga tushiradi"
+  echo "  monitor             - system_monitor.sh ni ishga tushiradi"
+  echo "  deploy               - safe_deploy.sh ni ishga tushiradi"
+}
+
+if [[ $# -eq 0 ]]
+then
+  usage
+  exit 1
+fi
+
+COMMAND=$1
+shift
+
+case $COMMAND in
+  logs) ./log_analyzer.sh "$@" ;;
+  backup) ./backup.sh "$@" ;;
+  monitor) ./system_monitor.sh ;;
+  deploy) ./safe_deploy.sh ;;
+  -h|--help) usage ;;
+  *)
+    echo "Noma'lum buyruq: $COMMAND"
+    usage
+    exit 1
+    ;;
+esac
+
